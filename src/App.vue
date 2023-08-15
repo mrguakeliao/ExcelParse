@@ -13,5 +13,7 @@ import ParseExcel from "@/components/ParseExcel.vue";
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  height: 100%;
+  box-sizing: border-box;
 }
 </style>

@@ -1,20 +1,21 @@
 <template>
-
-  <el-form :inline="true" class="demo-form-inline">
-    <el-form-item>
-      <el-upload style="display:inline-block" ref="uploadDemo" :http-request="uploadFile"
-                 accept=".xls,.xlsx"
-                 :show-file-list="false" :auto-upload="true">
-        <el-button icon="el-icon-upload2" size="small" type="primary">上传excel</el-button>
-      </el-upload>
-    </el-form-item>
-    <el-tabs v-model="activeName">
-      <el-tab-pane v-for="sheet in worksheets" :label=sheet.name :name=sheet.name :key="sheet.name">
-        <VueJsonPretty :data="sheet"/>
-      </el-tab-pane>
-    </el-tabs>
-  </el-form>
-
+  <div class="parse-container">
+    <el-form id="formRef" ref="formRef" :inline="true" class="demo-form-inline">
+      <el-form-item>
+        <el-upload style="display:inline-block" ref="uploadDemo" :http-request="uploadFile"
+                   accept=".xls,.xlsx"
+                   :show-file-list="false" :auto-upload="true">
+          <el-button icon="el-icon-upload2" size="small" type="primary">上传excel</el-button>
+        </el-upload>
+      </el-form-item>
+      <el-tabs v-model="activeName">
+        <el-tab-pane v-for="sheet in worksheets" :label=sheet.name :name=sheet.name :key="sheet.name">
+          <el-button type="primary" @click="copyText(sheet)">复制</el-button>
+          <VueJsonPretty class="pretty-container" :data="sheet" :height="800" virtual/>
+        </el-tab-pane>
+      </el-tabs>
+    </el-form>
+  </div>
 </template>
 
 <script>
@@ -36,15 +37,15 @@ export default {
         //   rows: [],
         // }
       ],
-
+      activeName: ""
     }
   },
-  computed: {
-    activeName() {
-      return _.first(this.worksheets)?.name ?? ""
-    }
+  mounted() {
   },
   methods: {
+    copyText(sheet) {
+      navigator.clipboard.writeText(JSON.stringify(sheet));
+    },
     async uploadFile(form) {
       let data = await ReadExcel(form.file)
       let worksheets = data._worksheets.filter(item => item != null)
@@ -79,12 +80,22 @@ export default {
         cur.push(sheet)
         return cur;
       }, [])
+      this.activeName = _.first(this.worksheets)?.name
       console.log(this.worksheets)
     }
   }
 }
 </script>
 <style scoped>
+.parse-container {
+  height: 100%;
+  width: 100%;
+}
+
+.pretty-container {
+  border: 10px solid #eee;
+}
+
 :deep .el-tabs__nav-scroll {
   display: flex;
   justify-content: center;
