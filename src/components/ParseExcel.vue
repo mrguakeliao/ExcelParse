@@ -2,10 +2,13 @@
   <div class="parse-container">
     <el-form id="formRef" ref="formRef" :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-upload style="display:inline-block" ref="uploadDemo" :http-request="uploadFile"
-                   accept=".xls,.xlsx"
-                   :show-file-list="false" :auto-upload="true">
-          <el-button icon="el-icon-upload2" size="small" type="primary">上传excel</el-button>
+        <el-upload class="upload-demo" :http-request="uploadFile"
+                   accept=".xls,.xlsx" :show-file-list="false" :auto-upload="true" drag>
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <template #tip>
+            <div class="el-upload__tip">只能上传excel文件</div>
+          </template>
         </el-upload>
       </el-form-item>
       <el-tabs v-model="activeName">
