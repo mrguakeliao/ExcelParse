@@ -64,3 +64,6 @@ node_modules
 dist
 *.*.db
 lz-experiment-manager/logs
+
+#Electron-builder output
+/dist_electron
